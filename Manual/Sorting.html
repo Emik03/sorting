@@ -1,0 +1,778 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Sorting — Keep Talking and Nobody Explodes Module</title>
+    <meta name="viewport" content="initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/font.css">
+    <script src="js/ktane-utils.js"></script>
+</head>
+<body>
+    <div id="ManualContent">
+        <div class="section">
+            <div class="page page-bg-01">
+                <div class="page-header">
+                    <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+                    <span class="page-header-section-title">Sorting</span>
+                </div>
+                <div class="page-content">
+                    <img src="img/Component/sorting.svg" class="diagram">
+                    <h2>On the Subject of Sorting</h2>
+                    <p class="flavour-text">What's the point of implementing a sorting algorithm if you are going to do it manually anyway?</p>
+
+                    <p>This module has a screen at the bottom stating an algorithm, among 5 buttons above the screen
+					laid out in an offset layout, each with a 2-digit label.</p>
+					
+					<p><strong>The defuser must be aware that positions refer to appearances from left to right, ignoring vertical offset.</strong> For example, 1st position classifies as bottom left.</p>
+					
+					<p>Each label can be swapped by pressing any button - which will highlight it white - and then selecting any other button. 
+					Pressing the highlighted button during this state will cancel the swap. To disarm this module, 
+					swap the labels according to the algorithm until all labels have been sorted. If an invalid swap has been made, 
+					the module strikes and it resets back to the original positions.</p>
+					
+                    <h3>Bubble Sort</h3>
+					<table>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 1</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>1st position's label is greater</br>than 2nd position's label?</td>
+                            <td>Swap 1st position and 2nd position.</td>
+						</tr>
+						<tr>
+							<td>2nd position's label is greater</br>than 3rd position's label?</td>
+                            <td>Swap 2nd position and 3rd position.</td>
+						</tr>
+						<tr>
+							<td>3rd position's label is greater</br>than 4th position's label?</td>
+                            <td>Swap 3nd position and 4th position.</td>
+						</tr>
+						<tr>
+							<td>4th position's label is greater</br>than 5th position's label?</td>
+                            <td>Swap 4th position and 5th position.</td>
+						</tr>
+						<tr>
+							<th class="center" colspan="2">Refer to Section 1 unless sorted.</th>
+						</tr>
+					</table>
+					<p></p>
+					<h3>Selection Sort</h3>
+					<table>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 1</th>
+                        </tr>
+                        <tr>
+                            <th>Find...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>The lowest label.</td>
+                            <td>Swap lowest label and 1st position.</td>
+						</tr>
+						<tr>
+							<td>The 2nd lowest label.</td>
+                            <td>Swap 2nd lowest label and 2nd position.</td>
+						</tr>
+						<tr>
+							<td>The 3rd lowest label.</td>
+                            <td>Swap 3rd lowest label and 3rd position.</td>
+						</tr>
+						<tr>
+							<td>The 4th lowest label.</td>
+                            <td>Swap 4th lowest label and 4th position.</td>
+						</tr>
+					</table>
+                </div>
+                <div class="page-footer relative-footer">Page 1 of 9</div>
+            </div>
+            <div class="page page-bg-02">
+                <div class="page-header">
+                    <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+                    <span class="page-header-section-title">Sorting</span>
+                </div>
+                <div class="page-content">
+					<h3>Insertion Sort</h3>
+					<table>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="3">Section 1</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+							<th>Otherwise...</th>
+                        </tr>
+						<tr>
+							<td>1st position's label is greater</br>than 2nd position's label?</td>
+                            <td>Swap 1st position and</br>2nd position.</td>
+							<td rowspan="1">Refer to Section 2</td>
+						</tr>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="3">Section 2</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+							<th>Otherwise...</th>
+                        </tr>
+						<tr>
+							<td>2nd position's label is greater</br>than 3rd position's label?</td>
+                            <td>Swap 2nd position and</br>3rd position.</td>
+							<td rowspan="2">Refer to Section 3</td>
+						</tr>
+						<tr>							
+							<td>1st position's label is greater</br>than 2nd position's label?</td>
+                            <td>Swap 1st position and</br>2nd position.</td>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="3">Section 3</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+							<th>Otherwise...</th>
+                        </tr>
+						<tr>
+							<td>3rd position's label is greater</br>than 4th position's label?</td>
+                            <td>Swap 3nd position and</br>4th position.</td>
+							<td rowspan="3">Refer to Section 4</td>
+						</tr>
+						<tr>
+							<td>2nd position's label is greater</br>than 3rd position's label?</td>
+                            <td>Swap 2nd position and</br>3rd position.</td>
+						</tr>
+						<tr>							
+							<td>1st position's label is greater</br>than 2nd position's label?</td>
+                            <td>Swap 1st position and</br>2nd position.</td>	
+						<tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 4</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>4th position's label is greater</br>than 5th position's label?</td>
+                            <td>Swap 4th position and</br>5th position.</td>
+						</tr>
+						<tr>
+							<td>3rd position's label is greater</br>than 4th position's label?</td>
+                            <td>Swap 3nd position and</br>4th position.</td>
+						</tr>
+						<tr>
+							<td>2nd position's label is greater</br>than 3rd position's label?</td>
+                            <td>Swap 2nd position and</br>3rd position.</td>
+						</tr>
+						<tr>							
+							<td>1st position's label is greater</br>than 2nd position's label?</td>
+                            <td>Swap 1st position and</br>2nd position.</td>
+					</table>
+                </div>
+                <div class="page-footer relative-footer">Page 2 of 9</div>
+            </div>
+            <div class="page page-bg-03">
+                <div class="page-header">
+                    <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+                    <span class="page-header-section-title">Sorting</span>
+                </div>
+                <div class="page-content">
+				<h3>Radix Sort</h3>
+					<table>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 1</th>
+                        </tr>
+                        <tr>
+                            <th>Find...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>The smallest</br>least-significant* digit</td>
+                            <td>Swap the least-significant*</br>digit with 1st position.</td>
+						</tr>
+						<tr>
+							<td>The 2nd smallest</br>least-significant* digit</td>
+                            <td>Swap the 2nd least-significant*</br>digit with 2nd position.</td>
+						</tr>
+						<tr>
+							<td>The 3rd smallest</br>least-significant* digit</td>
+                            <td>Swap the 3rd least-significant*</br>digit with 3rd position.</td>
+						</tr>
+						<tr>
+							<td>The 4th smallest</br>least-significant* digit</td>
+                            <td>Swap the 4th least-significant*</br>digit with 4th position.</td>
+						</tr>
+						<tr>
+							<td>The 5th smallest</br>least-significant* digit</td>
+                            <td>Swap the 5th least-significant*</br>digit with 5th position.</td>
+						</tr>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 2</th>
+                        </tr>
+						<tr>
+                            <th>Find...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>The smallest</br>most-significant* digit</td>
+                            <td>Swap the most-significant*</br>digit with 1st position.</td>
+						</tr>
+						<tr>
+							<td>The 2nd smallest</br>most-significant* digit</td>
+                            <td>Swap the 2nd most-significant*</br>digit with 2nd position.</td>
+						</tr>
+						<tr>
+							<td>The 3rd smallest</br>most-significant* digit</td>
+                            <td>Swap the 3rd most-significant*</br>digit with 3rd position.</td>
+						</tr>
+						<tr>
+							<td>The 4th smallest</br>most-significant* digit</td>
+                            <td>Swap the 4th most-significant*</br>digit with 4th position.</td>
+						</tr>
+						<tr>
+							<td>The 5th smallest</br>most-significant* digit</td>
+                            <td>Swap the 5th most-significant*</br>digit with 5th position.</td>
+						</tr>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 3</th>
+                        </tr>
+						<tr>
+                            <td colspan="2">Because Radix Sort isn't meant exclusively for swapping, 
+							in the rare chance that after following all of these instructions the labels
+						    aren't sorted, you are free to do any type of swap from here on out to sort the buttons yourself.
+							We are sorry that Radix Sort was unable to fully help you in this situation.</td>
+                        </tr>
+					</table>
+					<p></p>
+					<p>*Least-significant digit is the lowest digit in a label, located at the far right of a number. 
+					For example, in the number 16, the "6" is the least significant digit.</p>
+					<p>*Most-significant digit is the highest digit in a label, located at the far left of a number. 
+					For example, in the number 16, the "1" is the most significant digit.</p>
+                </div>
+                <div class="page-footer relative-footer">Page 3 of 9</div>
+            </div>
+			<div class="page page-bg-04">
+                <div class="page-header">
+                    <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+                    <span class="page-header-section-title">Sorting</span>
+                </div>
+                <div class="page-content">
+				<h3>Merge Sort</h3>
+					<table>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 1</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>1st position's label is greater</br>than 2nd position's label?</td>
+                            <td>Swap 1st position and</br>2nd position.</td>
+						</tr>
+						<tr>
+							<td>4th position's label is greater</br>than 5th position's label?</td>
+                            <td>Swap 4th position and</br>5th position.</td>
+						</tr>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 2</th>
+                        </tr>
+                        <tr>
+                            <th>Find...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>Smallest value in positions 1 to 3.</td>
+                            <td>Swap it with 1st position only if</br>the last digit in serial is odd.</td>
+						</tr>
+						<tr>
+							<td>Largest value in positions 3 to 5.</td>
+                            <td>Swap it with 5th position only if</br>the last digit in serial is even.</td>
+						</tr>
+						<tr>
+							<td>2nd smallest value in positions 1 to 3.</td>
+                            <td>Swap it with 2nd position only if</br>the last digit in serial is odd.</td>
+						</tr>
+						<tr>
+							<td>2nd largest value in positions 3 to 5.</td>
+                            <td>Swap it with 4th position only if</br>the last digit in serial is even.</td>
+						</tr>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 3</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Refer to Selection Sort</th>
+                        </tr>
+					</table>
+					<p></p>
+					<h3>Odd-Even Transposition Sort</h3>
+					<table>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 1</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>1st position's label is greater</br>than 2nd position's label?</td>
+                            <td>Swap 1st position and 2nd position.</td>
+						</tr>
+						<tr>
+							<td>3rd position's label is greater</br>than 4th position's label?</td>
+                            <td>Swap 3rd position and 4th position.</td>
+						</tr>
+						<tr>
+							<td>2nd position's label is greater</br>than 3rd position's label?</td>
+                            <td>Swap 2nd position and 3rd position.</td>
+						</tr>
+						<tr>
+							<td>4th position's label is greater</br>than 5th position's label?</td>
+                            <td>Swap 4th position and 5th position.</td>
+						</tr>
+						<tr>
+							<th class="center" colspan="2">Refer to Section 1 unless sorted.</th>
+						</tr>
+					</table>
+                </div>
+                <div class="page-footer relative-footer">Page 4 of 9</div>
+            </div>
+			<div class="page page-bg-05">
+                <div class="page-header">
+                    <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+                    <span class="page-header-section-title">Sorting</span>
+                </div>
+                <div class="page-content">
+				<h3>Comb Sort</h3>
+					<table>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 1</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>1st position's label is greater than</br>4th position's label?</td>
+                            <td>Swap 1st position and 4th position.</td>
+						</tr>
+						<tr>
+							<td>2nd position's label is greater than</br>5th position's label?</td>
+                            <td>Swap 2nd position and 5th position.</td>
+						</tr>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 2</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>1st position's label is greater than</br>3rd position's label?</td>
+                            <td>Swap 1st position and 3rd position.</td>
+						</tr>
+						<tr>
+							<td>2nd position's label is greater than</br>4th position's label?</td>
+                            <td>Swap 2nd position and 4th position.</td>
+						</tr>
+						<tr>
+							<td>3rd position's label is greater than</br>5th position's label?</td>
+                            <td>Swap 3rd position and 5th position.</td>
+						</tr>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 3</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Refer to Bubble Sort</th>
+                        </tr>
+					</table>
+				<p></p>
+				<h3>Heap Sort</h3>
+					<table>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 1</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>2nd position's label is smaller than</br>4th position's label?</td>
+                            <td>Swap 2nd position and 4th position.</td>
+						</tr>
+						<tr>
+							<td>2nd position's label is smaller than</br>5th position's label?</td>
+                            <td>Swap 2nd position and 5th position.</td>
+						</tr>
+						<tr>
+							<td>1st position's label is smaller than</br>2nd position's label?</td>
+                            <td>Swap 1st position and 2nd position.</td>
+						</tr>
+						<tr>
+							<td>1st position's label is smaller than</br>3rd position's label?</td>
+                            <td>Swap 1st position and 3rd position.</td>
+						</tr>
+						<tr>
+							<td>2nd position's label is smaller than</br>4th position's label?</td>
+                            <td>Swap 2nd position and 4th position.</td>
+						</tr>
+						<tr>
+							<td>2nd position's label is smaller than</br>5th position's label?</td>
+                            <td>Swap 2nd position and 5th position.</td>
+						</tr>
+					</table>
+                </div>
+                <div class="page-footer relative-footer">Page 5 of 9</div>
+            </div>
+			<div class="page page-bg-06">
+                <div class="page-header">
+                    <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+                    <span class="page-header-section-title">Sorting</span>
+                </div>
+                <div class="page-content">
+				<h3>Heap Sort (continued)</h3>
+					<table>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 1 (continued)</th>
+                        </tr>
+						<tr>
+                            <th>Find...</th>
+                            <th>Then...</th>
+						</tr>
+						<tr>
+							<td>1st position.</td>
+                            <td>Swap 1st position and 5th position.</td>
+						</tr>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 2</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>1st position's label is smaller than</br>2nd position's label?</td>
+                            <td>Swap 1st position and 2nd position.</td>
+						</tr>
+						<tr>
+							<td>1st position's label is smaller than</br>3rd position's label?</td>
+                            <td>Swap 1st position and 3rd position.</td>
+						</tr>
+						<tr>
+							<td>2nd position's label is smaller than</br>4th position's label?</td>
+                            <td>Swap 2nd position and 4th position.</td>
+						</tr>
+						<tr>
+                            <th>Find...</th>
+                            <th>Then...</th>
+						</tr>
+						<tr>
+							<td>1st position.</td>
+                            <td>Swap 1st position and 4th position.</td>
+						</tr>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 3</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+							<td>1st position's label is smaller than</br>2nd position's label?</td>
+                            <td>Swap 1st position and 2nd position.</td>
+						</tr>
+						<tr>
+							<td>1st position's label is smaller than</br>3rd position's label?</td>
+                            <td>Swap 1st position and 3rd position.</td>
+						</tr>
+						<tr>
+                            <th>Find...</th>
+                            <th>Then...</th>
+						</tr>
+						<tr>
+							<td>1st position.</td>
+                            <td>Swap 1st position and 3rd position.</td>
+						</tr>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 4</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+                        </tr>
+							<td>1st position's label is smaller than</br>2nd position's label?</td>
+                            <td>Swap 1st position and 2nd position.</td>
+						</tr>
+					</table>
+
+					<p></p>
+					<h3 style="color:white">Bogo Sort</h3>
+					<table>
+						<tr>
+                            <th style="color:white" class="invis-row" colspan="2">Section 1</th>
+                        </tr>
+						<tr>
+                            <td style="color:white" class="invis-row" colspan="2">Strikes are impossible in this state as all swaps are valid but the defuser cannot see the newly-generated labels. The module solves as normal if sorted. If you wish to go back to normal, do exactly what you did to end up here.</td>
+                        </tr>
+					</table>
+                </div>
+                <div class="page-footer relative-footer">Page 6 of 9</div>
+            </div>
+			<div class="page page-bg-07">
+                <div class="page-header">
+                    <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+                    <span class="page-header-section-title">Sorting</span>
+                </div>
+                <div class="page-content">
+				<h3>Cocktail Shaker Sort</h3>
+					<table>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 1</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>1st position's label is greater</br>than 2nd position's label?</td>
+                            <td>Swap 1st position and 2nd position.</td>
+						</tr>
+						<tr>
+							<td>2nd position's label is greater</br>than 3rd position's label?</td>
+                            <td>Swap 2nd position and 3rd position.</td>
+						</tr>
+						<tr>
+							<td>3rd position's label is greater</br>than 4th position's label?</td>
+                            <td>Swap 3nd position and 4th position.</td>
+						</tr>
+						<tr>
+							<td>4th position's label is greater</br>than 5th position's label?</td>
+                            <td>Swap 4th position and 5th position.</td>
+						</tr>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 2</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>3rd position's label is greater</br>than 4th position's label?</td>
+                            <td>Swap 3rd position and 4th position.</td>
+						</tr>
+						<tr>
+							<td>2nd position's label is greater</br>than 3rd position's label?</td>
+                            <td>Swap 2nd position and 3rd position.</td>
+						</tr>
+						<tr>
+							<td>1st position's label is greater</br>than 2nd position's label?</td>
+                            <td>Swap 1st position and 2nd position.</td>
+						</tr>
+						<tr>
+							<th style="color:white" class="section-row" colspan="2">Section 3</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>2nd position's label is greater</br>than 3rd position's label?</td>
+                            <td>Swap 2nd position and 3rd position.</td>
+						</tr>
+						<tr>
+							<td>3rd position's label is greater</br>than 4th position's label?</td>
+                            <td>Swap 3rd position and 4th position.</td>
+						</tr>
+						</tr>
+							<th style="color:white" class="section-row" colspan="2">Section 4</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>2nd position's label is greater</br>than 3rd position's label?</td>
+                            <td>Swap 2nd position and 3rd position.</td>
+						</tr>
+					</table>
+					<p></p>
+                </div>
+                <div class="page-footer relative-footer">Page 7 of 9</div>
+            </div>
+			<div class="page page-bg-01">
+                <div class="page-header">
+                    <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+                    <span class="page-header-section-title">Sorting</span>
+                </div>
+                <div class="page-content">
+				<h3>Cycle Sort</h3>
+					<table>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 1</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>1st position isn't smallest?</td>
+                            <td>Refer to Section 2 with <strong>S</strong> = 1.</td>
+						</tr>
+						<tr>
+							<td>2nd position isn't 2nd smallest?</td>
+                            <td>Refer to Section 2 with <strong>S</strong> = 2.</td>
+						</tr>
+						<tr>
+							<td>3rd position isn't 3rd smallest?</td>
+                            <td>Refer to Section 2 with <strong>S</strong> = 3.</td>
+						</tr>
+						<tr>
+							<td>4th position isn't 4th smallest?</td>
+                            <td>Refer to Section 2 with <strong>S</strong> = 4.</td>
+						</tr>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 2</th>
+                        </tr>
+                        <tr>
+                            <th>Find...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td rowspan=2>The (<strong>S</strong>)th position.</td>
+                            <td>Count how many numbers are bigger than</br>(<strong>S</strong>)th position, store that value in <strong>B</strong>.</td>
+						</tr>
+						<tr>
+
+                            <td>Swap (<strong>S</strong>)th position with (<strong>B</strong> + 1).</td>
+						</tr>
+						<tr>
+							<th class="center" colspan="2">Refer to Section 1 unless sorted.</th>
+						</tr>
+					</table>
+					<p></p>
+					<h3>Five Sort</h3>
+					<table>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 1</th>
+                        </tr>
+                        <tr>
+                            <th>Find...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>The median* value.</td>
+                            <td>Swap the median* with 3rd position.</td>
+						</tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>1st position's label</br>bigger than median*?</td>
+                            <td>Swap 1st position with the earliest position</br>after the median that's also smaller than it.</td>
+						</tr>
+						<tr>
+							<td>2nd position's label</br>bigger than median*?</td>
+                            <td>Swap 2nd position with the earliest position</br>after the median that's also smaller than it.</td>
+						</tr>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 2</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>1st position's label</br>bigger than 2nd position?</td>
+                            <td>Swap 1st position and 2nd position.</td>
+						</tr>
+						<tr>
+							<td>4th position's label</br>bigger than 5th position?</td>
+                            <td>Swap 4th position and 5th position.</td>
+						</tr>
+						<tr>
+							<th class="center" colspan="2">Refer to Section 2 unless sorted.</th>
+						</tr>			
+					</table>
+					<p></p>
+					<p>*Median in this instance is the 3rd highest number.</p>
+                </div>
+                <div class="page-footer relative-footer">Page 8 of 9</div>
+            </div>
+			<div class="page page-bg-02">
+                <div class="page-header">
+                    <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+                    <span class="page-header-section-title">Sorting</span>
+                </div>
+                <div class="page-content">
+					<h3>Quick Sort</h3>
+					<table>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 1</th>
+                        </tr>                        
+						<tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td>This is the first time running Section 1?</td>
+							<td><strong>Pivot</strong> = 1 and <strong>Current</strong> = 5.</td>
+						</tr>
+						<tr>
+							<td><strong>Pivot</strong> is greater than <strong>current</strong>?</td>
+							<td>Refer to Section 2.</td>
+						</tr>
+						<tr>
+							<td><strong>Pivot's label</strong> is</br>greater than the <strong>current's label</strong>*?</td>
+                            <td>Swap <strong>pivot's label</strong> and <strong>current's label</strong>.</br>The placements of <strong>pivot</strong> and <strong>current</strong> themselves have also been switched**.</td>
+						</tr>
+						<tr>
+							<th class="center" colspan="2">Refer to Section 3.</th>
+						</tr>
+						<tr>
+                            <th style="color:white" class="section-row" colspan="2">Section 2</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+                        </tr>
+						<tr>
+							<td><strong>Pivot's label</strong> is</br>smaller than the <strong>current's label</strong>*?</td>
+                            <td>Swap <strong>pivot's label</strong> and <strong>current's label</strong>.</br>The placements of <strong>pivot</strong> and <strong>current</strong> themselves have also been switched**.</td>
+						</tr>
+					    <tr>
+                            <th style="color:white" class="section-row" colspan="3">Section 3</th>
+                        </tr>
+                        <tr>
+                            <th>If...</th>
+                            <th>Then...</th>
+							<th>Otherwise...</th>
+                        </tr>
+						<tr>
+							<td><strong>Pivot</strong> is smaller</br>than the <strong>current</strong>?</td>
+                            <td>Subtract 1 from <strong>current</strong>.</td>
+							<td>Add 1 to <strong>current</strong>.</td>
+						</tr>
+						<tr>
+							<td><strong>Pivot</strong> is the same as <strong>current</strong>?</td>
+                            <td><strong>Pivot</strong> = earliest unsorted position.</br><strong>Current</strong> = latest unsorted position.</td>
+							<td>Nothing.</td>
+						</tr>		
+						<tr>
+							<th class="center" colspan="3">Refer to Section 1 unless sorted.</th>
+						</tr>				
+					</table>
+					<p></p>
+					<p>*Pivot's label and current's label refer to the label present on its position.</br>For example, if pivot = 2, then the pivot's label is the 2nd position's label.</p>
+					<p>**When any swap occurs, the pivot and current get swapped with each other as well. For example, if pivot = 1 and current = 5 and you have swapped those two labels, then afterwards pivot = 5 and current = 1.</p>
+				</div>
+                <div class="page-footer relative-footer">Page 9 of 9</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
