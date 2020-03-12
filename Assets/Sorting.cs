@@ -20,6 +20,9 @@ public class Sorting : MonoBehaviour
 
     internal Algorithms algorithms = new Algorithms();
 
+    bool isSolved = false;
+    byte swapButtons = 0, swapIndex = 1;
+
     private Color32 _buttonColor = new Color32(96, 176, 176, 255),
                     _blinkingColor = new Color32(144, 255, 255, 255),
                     _highlightColor = new Color32(255, 255, 255, 255),
@@ -27,8 +30,8 @@ public class Sorting : MonoBehaviour
                     _strikeColor = new Color32(255, 128, 128, 255),
                     _strikeBackgroundColor = new Color32(128, 64, 64, 255);
 
-    private bool _isSolved = false, _lightsOn = false, _buttonDelay = false, _bogoSort = false;
-    private byte _frames = 0, _swapButtons = 0, _swapIndex = 1, _pushTimes = 0;
+    private bool _lightsOn = false, _buttonDelay = false, _bogoSort = false;
+    private byte _frames = 0, _pushTimes = 0;
     private int _moduleId = 0;
     private float _swapAnimated = 0;
     private string _currentAlgorithm = "";
@@ -105,7 +108,7 @@ public class Sorting : MonoBehaviour
         }
 
         //if solved, cycle the flashing towards the left side
-        if (_isSolved)
+        if (isSolved)
             _frames--;
 
         //if unsolved, cycle the flashing towards the right side
@@ -212,7 +215,7 @@ public class Sorting : MonoBehaviour
     private void GenerateNumber(int num)
     {
         //resets required swap count before breaking
-        _swapIndex = 1;
+        swapIndex = 1;
 
         byte rng = (byte)Random.Range(0, 100);
 
@@ -238,7 +241,7 @@ public class Sorting : MonoBehaviour
     private void ResetNumber()
     {
         //resets required swap count before breaking
-        _swapIndex = 1;
+        swapIndex = 1;
 
         //get initial buttons
         for (int i = 0; i < _initialButtons.Length; i++)
@@ -265,7 +268,7 @@ public class Sorting : MonoBehaviour
         Audio.PlaySoundAtTransform("tick", Module.transform);
 
         //if lights are off, the buttons should do nothing
-        if (!_lightsOn || _isSolved || _buttonDelay)
+        if (!_lightsOn || isSolved || _buttonDelay)
         {
             string playSound = "button" + (num + 1).ToString();
             Audio.PlaySoundAtTransform(playSound, Module.transform);
@@ -370,19 +373,19 @@ public class Sorting : MonoBehaviour
         if (_selected[0] < _selected[1])
         {
             //lower number translates to most significant digit
-            _swapButtons = (byte)((_selected[0] + 1) * 10);
-            _swapButtons += (byte)(_selected[1] + 1);
+            swapButtons = (byte)((_selected[0] + 1) * 10);
+            swapButtons += (byte)(_selected[1] + 1);
         }
 
         else
         {
             //lower number translates to most significant digit
-            _swapButtons = (byte)((_selected[1] + 1) * 10);
-            _swapButtons += (byte)(_selected[0] + 1);
+            swapButtons = (byte)((_selected[1] + 1) * 10);
+            swapButtons += (byte)(_selected[0] + 1);
         }
 
         //checks if the swap is valid
-        if (algorithms.IfValid(Screen.text, _initialButtons, _swapButtons, _swapIndex, _moduleId, Info.GetSerialNumberNumbers))
+        if (algorithms.IfValid(Screen.text, _initialButtons, swapButtons, swapIndex, _moduleId, Info.GetSerialNumberNumbers))
             DoSwap();
 
         else
@@ -411,8 +414,8 @@ public class Sorting : MonoBehaviour
             Audio.PlaySoundAtTransform("swapSuccess", Module.transform);
 
         _buttonDelay = true;
-        _swapIndex++;
-        //Debug.LogFormat("Swap index is now {0}", _swapIndex);
+        swapIndex++;
+        //Debug.LogFormat("Swap index is now {0}", swapIndex);
 
         //gets the positions of both buttons
         for (int i = 0; i < pos.Length; i++)
@@ -494,7 +497,7 @@ public class Sorting : MonoBehaviour
         //checks if everything is sorted
         if (sorted == _buttons.Length - 1)
         {
-            _isSolved = true;
+            isSolved = true;
             Audio.PlaySoundAtTransform("modulePass", Module.transform);
 
             Debug.LogFormat("[Sorting #{0}] All buttons sorted, module solved!", _moduleId);
@@ -569,7 +572,7 @@ public class Sorting : MonoBehaviour
     IEnumerator TwitchHandleForcedSolve()
     {
         Module.HandlePass();
-        _isSolved = true;
+        isSolved = true;
         yield return null;
     }
 }

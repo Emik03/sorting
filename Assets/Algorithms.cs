@@ -356,7 +356,10 @@ namespace Assets
                     break;
             }
 
-            return true;
+            if (totalSwaps != 250)
+                return true;
+
+            return false;
         }
 
         public bool MergeSort(byte[] buttonList, byte swapButtons, byte totalSwaps, int moduleId, ref Func<IEnumerable<int>> serialNumber)
@@ -967,8 +970,10 @@ namespace Assets
 
         public bool BogoSort(byte[] buttonList, byte swapButtons, byte totalSwaps, int moduleId, ref Func<IEnumerable<int>> serialNumber)
         {
-            //needs to return true, otherwise this is a null exception
-            return true;
+            if (totalSwaps != 250)
+                return true;
+
+            return false;
         }
     }
 }
