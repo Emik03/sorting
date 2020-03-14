@@ -378,7 +378,7 @@ namespace Assets
             }
 
             //determine which side 3 should merge with
-            if (serialNumber().Last() % 2 == 1)
+            if (serialNumber().First() % 2 == 1)
             {
                 for (int i = 0; i <= 1; i++)
                 {
