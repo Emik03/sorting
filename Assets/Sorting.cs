@@ -22,6 +22,7 @@ public class Sorting : MonoBehaviour
 
     bool isSolved = false;
     byte swapButtons = 0, swapIndex = 1;
+    string _currentAlgorithm = "";
 
     private Color32 _buttonColor = new Color32(96, 176, 176, 255),
                     _blinkingColor = new Color32(144, 255, 255, 255),
@@ -30,12 +31,11 @@ public class Sorting : MonoBehaviour
                     _strikeColor = new Color32(255, 128, 128, 255),
                     _strikeBackgroundColor = new Color32(128, 64, 64, 255);
 
-    private bool _lightsOn = false, _buttonDelay = false, _bogoSort = false;
+    private bool _lightsOn = false, _buttonDelay = false, _bogoSort = false, _doAction = false;
     private byte _frames = 0, _pushTimes = 0;
     private int _moduleId = 0;
-    private float _swapAnimated = 0;
-    private string _currentAlgorithm = "";
-
+    private float _animate = 1;
+    
     private List<byte> _selected = new List<byte>();
     private byte[] _buttons = new byte[5], _initialButtons = new byte[5];
     private readonly string[] _algorithms = new string[12]
@@ -51,50 +51,25 @@ public class Sorting : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        if (_swapAnimated > 0)
+        if (_animate < 1)
         {
             //buttons move towards positions
-            for (int i = 0; i < pos.Length; i++)
-            {
-                byte division = 1;
+            btn[_selected[0]].transform.localPosition = Vector3.Lerp(pos[0].localPosition, pos[1].localPosition, QuarticOut(_animate));
+            btn[_selected[1]].transform.localPosition = Vector3.Lerp(pos[1].localPosition, pos[0].localPosition, QuarticOut(_animate));
 
-                //gets the right division for the ease
-                switch (Mathf.Abs(_selected[1] - _selected[0]))
-                {
-                    case 1:
-                        division = 111;
-                        break;
-
-                    case 2:
-                        division = 120;
-                        break;
-
-                    case 3:
-                        division = 67;
-                        break;
-
-                    case 4:
-                        division = 60;
-                        break;
-                }
-
-                //swap button placements
-                btn[_selected[i]].transform.position = Vector3.MoveTowards(btn[_selected[i]].transform.position, pos[pos.Length - 1 - i].position, Mathf.Pow(_swapAnimated, 3) / division);
-            }
+            _animate += 0.05f;
 
             //commit an actual swap
-            if (_swapAnimated < 0.05f)
+            if (_animate > 1)
             {
                 for (int i = 0; i < pos.Length; i++)
                 {
                     //swapping positions
-                    btn[_selected[i]].transform.position = pos[i].position;
+                    btn[_selected[i]].transform.localPosition = pos[i].localPosition;
                 }
 
                 ResetButtons();
             }
-
-            _swapAnimated -= 0.05f;
         }
 
         //force question marks
@@ -107,28 +82,36 @@ public class Sorting : MonoBehaviour
             }
         }
 
-        //if solved, cycle the flashing towards the left side
-        if (isSolved)
-            _frames--;
-
-        //if unsolved, cycle the flashing towards the right side
-        else
-            _frames++;
-
-        //fixes modulo
-        _frames += 100;
-        _frames %= 100;
+        _frames = (byte)((_frames + 1) % 64);
 
         //fun effect for clearing it, flashes colors back and forth
         for (int i = 0; i < btn.Length; i++)
         {
-            if (btn[i].GetComponent<MeshRenderer>().material.color != _highlightColor && btn[i].GetComponent<MeshRenderer>().material.color != _strikeColor)
+            if (btn[i].GetComponent<MeshRenderer>().material.color == _highlightColor || btn[i].GetComponent<MeshRenderer>().material.color == _strikeColor)
+                continue;
+
+            if (!isSolved)
             {
-                if (_frames >= i * 10 && _frames <= (i + 3) * 10)
+                if (_frames >= i * 8 && _frames <= (i + 3) * 8)
                     btn[i].GetComponent<MeshRenderer>().material.color = _blinkingColor;
 
                 else
                     btn[i].GetComponent<MeshRenderer>().material.color = _buttonColor;
+            }
+
+            else if (_frames % 8 == 0)
+            {
+                if (UnityEngine.Random.Range(0, 2) == 0)
+                {
+                    btn[i].GetComponent<MeshRenderer>().material.color = _blinkingColor;
+                    btn[4 - i].GetComponent<MeshRenderer>().material.color = _blinkingColor;
+                }
+
+                else
+                {
+                    btn[i].GetComponent<MeshRenderer>().material.color = _buttonColor;
+                    btn[4 - i].GetComponent<MeshRenderer>().material.color = _buttonColor;
+                }
             }
         }
     }
@@ -197,9 +180,11 @@ public class Sorting : MonoBehaviour
             }
         } while (sorted == _buttons.Length - 1);
 
+        Debug.LogFormat("[Sorting #{0}] The buttons are laid out as follows: {1}, {2}, {3}, {4}, {5}", _moduleId, _initialButtons[0], _initialButtons[1], _initialButtons[2], _initialButtons[3], _initialButtons[4]);
+
         //get random algorithm
         _currentAlgorithm = _algorithms[Random.Range(0, _algorithms.Length)];
-        //_currentAlgorithm = "FIVE";
+        //_currentAlgorithm = "BOGO";
         Screen.text = _currentAlgorithm;
 
         Debug.LogFormat("[Sorting #{0}] Algorithm recieved: {1}", _moduleId, Screen.text);
@@ -224,8 +209,6 @@ public class Sorting : MonoBehaviour
         {
             _initialButtons[num] = rng;
             _buttons[num] = rng;
-
-            Debug.LogFormat("[Sorting #{0}] Button {1} has the label \"{2}\".", _moduleId, num + 1, rng);
         }
 
         //duplicate number prevention
@@ -314,6 +297,8 @@ public class Sorting : MonoBehaviour
                 GenerateNumber(i);
             }
 
+            Debug.LogFormat("[Sorting #{0}] The buttons are laid out as follows: {1}, {2}, {3}, {4}", _moduleId, _initialButtons[0], _initialButtons[1], _initialButtons[2], _initialButtons[3]);
+
             //bogosort
             if (!_bogoSort)
             {
@@ -393,6 +378,7 @@ public class Sorting : MonoBehaviour
             Debug.LogFormat("[Sorting #{0}] Swap was invalid! Strike! The buttons have been reorganized back into their original state.", _moduleId);
             Audio.PlaySoundAtTransform("moduleStrike", Module.transform);
             Module.HandleStrike();
+            _doAction = false;
 
             background.GetComponent<MeshRenderer>().material.color = _strikeBackgroundColor;
 
@@ -420,11 +406,11 @@ public class Sorting : MonoBehaviour
         //gets the positions of both buttons
         for (int i = 0; i < pos.Length; i++)
         {
-            pos[i].position = btn[_selected[i]].transform.position;
+            pos[i].localPosition = btn[_selected[i]].transform.localPosition;
         }
 
         //the update function will animate this for however many frames this is set to
-        _swapAnimated = 1;
+        _animate = 0;
 
         //swapping labels
         byte temp = _buttons[_selected[0]];
@@ -497,6 +483,7 @@ public class Sorting : MonoBehaviour
         //checks if everything is sorted
         if (sorted == _buttons.Length - 1)
         {
+            Screen.text = "SORTED!";
             isSolved = true;
             Audio.PlaySoundAtTransform("modulePass", Module.transform);
 
@@ -506,6 +493,11 @@ public class Sorting : MonoBehaviour
         }
     }
 
+    protected static float QuarticOut(float k)
+    {
+        return 1f - ((k -= 1f) * k * k * k);
+    }
+
     /// <summary>
     /// Determines whether the input from the TwitchPlays chat command is valid or not.
     /// </summary>
@@ -513,15 +505,12 @@ public class Sorting : MonoBehaviour
     private bool IsValid(string par)
     {
         string[] validNumbers = { "1", "2", "3", "4", "5" };
-
-        if (validNumbers.Contains(par))
-            return true;
-
-        return false;
+        char[] c = par.ToCharArray();
+        return c.Length == 2 && (validNumbers.Contains(c[0].ToString()) || validNumbers.Contains(c[0].ToString()));
     }
 
 #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"!{0} swap <#> <#> (Swaps the labels in position '#' | valid numbers are from 1-5 | example: !swap 2 4";
+    private readonly string TwitchHelpMessage = @"!{0} swap <##> (Swaps the labels in position '#' | valid numbers are from 1-5 | example: !swap 24 13 swaps 2 & 4 then 1 & 3)";
 #pragma warning restore 414
 
     /// <summary>
@@ -537,32 +526,41 @@ public class Sorting : MonoBehaviour
         {
             yield return null;
 
-            //if command has no parameters
-            if (buttonSwapped.Length < 3)
-                yield return "sendtochaterror Please specify the 2 labels you want to swap! (Valid: 1-5)";
-
-            //if command has too many parameters
-            else if (buttonSwapped.Length > 3)
-                yield return "sendtochaterror Too many buttons swapped! Only two labels can be swapped at a time.";
-
-            //if command has an invalid parameter
-            else if (!IsValid(buttonSwapped.ElementAt(1)) && !IsValid(buttonSwapped.ElementAt(2)))
-                yield return "sendtochaterror Invalid number! Only label positions 1-5 can be swapped.";
-
-            //if command is valid, push button accordingly
-            else
+            _doAction = true;
+            for (int i = 1; i < buttonSwapped.Length; i++)
             {
-                byte seq1 = 0, seq2;
-
-                byte.TryParse(buttonSwapped[1], out seq1);
-                byte.TryParse(buttonSwapped[2], out seq2);
-
-                btn[seq1 - 1].OnInteract();
-
-                yield return new WaitForSeconds(0.25f);
-
-                btn[seq2 - 1].OnInteract();
+                string[] validNumbers = { "1", "2", "3", "4", "5" };
+                char[] c = buttonSwapped[i].ToCharArray();
+                if (c.Length != 2 || !validNumbers.Contains(c[0].ToString()) || !validNumbers.Contains(c[0].ToString()))
+                    _doAction = false;
             }
+
+            if (!_doAction)
+                yield return "sendtochaterror Invalid number! Only label positions 1-5 can be swapped. Expected a two-digit number.";
+
+            else
+                for (int i = 1; i < buttonSwapped.Length; i++)
+                {
+                    if (!_doAction)
+                        break;
+
+                    char[] c = buttonSwapped[i].ToCharArray();
+                    byte seq1 = 0, seq2;
+
+                    byte.TryParse(c[0].ToString(), out seq1);
+                    byte.TryParse(c[1].ToString(), out seq2);
+
+                    if (seq1 != seq2)
+                    {
+                        btn[seq1 - 1].OnInteract();
+
+                        yield return new WaitForSeconds(0.2f);
+
+                        btn[seq2 - 1].OnInteract();
+
+                        yield return new WaitForSeconds(0.4f);
+                    }
+                }
         }
     }
 

@@ -22,6 +22,9 @@ namespace Assets
         /// <param name="totalSwaps">The amount of swaps done previously.</param>
         protected internal bool IfValid(string algorithm, byte[] initialButtons, byte swapButtons, byte totalSwaps, int moduleId, Func<IEnumerable<int>> serialNumber)
         {
+            if (algorithm == "SORTED!")
+                return true;
+
             //makes new list so that it doesn't reference the initialbuttons list
             byte[] buttonList = new byte[initialButtons.Length];
 
@@ -384,7 +387,7 @@ namespace Assets
                 {
                     for (int j = 0; j <= 2; j ++)
                     {
-                        Debug.LogFormat("j: {0}", j);
+                        //Debug.LogFormat("j: {0}", j);
                         if (i == j)
                             continue;
 
@@ -396,7 +399,7 @@ namespace Assets
                                 biggerThan++;
                         }
 
-                        Debug.LogFormat("i: {0}, j: {1}, biggerThan: {2}", i, j, biggerThan);
+                        //Debug.LogFormat("i: {0}, j: {1}, biggerThan: {2}", i, j, biggerThan);
                         if (biggerThan == i)
                         {
                             //swapping
@@ -442,7 +445,7 @@ namespace Assets
                                 biggerThan++;
                         }
 
-                        Debug.LogFormat("i: {0}, j: {1}, biggerThan: {2}", i - 2, j, biggerThan);
+                        //Debug.LogFormat("i: {0}, j: {1}, biggerThan: {2}", i - 2, j, biggerThan);
                         if (biggerThan == i - 2)
                         {
                             //swapping
@@ -851,7 +854,7 @@ namespace Assets
 
             for (int i = 0; i < buttonList.Length * 10; i++)
             {
-                Debug.LogFormat("iteration: {0}, pivot: {1}, current: {2}", i, pivot, current);
+                //Debug.LogFormat("iteration: {0}, pivot: {1}, current: {2}", i, pivot, current);
 
                 //if the smaller is to the right or the bigger number to the left relative to pivot, swap
                 if ((buttonList[pivot] > buttonList[current] && pivot < current) || (buttonList[pivot] < buttonList[current] && pivot > current))
