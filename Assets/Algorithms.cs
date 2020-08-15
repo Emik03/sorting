@@ -385,7 +385,7 @@ namespace Assets
             {
                 for (int i = 0; i <= 1; i++)
                 {
-                    for (int j = 0; j <= 2; j ++)
+                    for (int j = 0; j <= 2; j++)
                     {
                         //Debug.LogFormat("j: {0}", j);
                         if (i == j)
@@ -624,7 +624,7 @@ namespace Assets
                         offset = 2;
                         break;
 
-                    //1st > 3rd
+                    //1st > 2nd
                     case 15:
                         index = 0;
                         offset = 1;
@@ -784,8 +784,8 @@ namespace Assets
                     if (totalSwaps == currentSwaps)
                     {
                         //least significant digit should always be larger quantity
-                            currentButtons = (byte)((i + 1) * 10);
-                            currentButtons += (byte)(middleValue + offset + 1);
+                        currentButtons = (byte)((i + 1) * 10);
+                        currentButtons += (byte)(middleValue + offset + 1);
 
                         Debug.LogFormat("[Sorting #{0}] Swap Number {1}. Expecting position swaps {2} and {3}. Received position swaps {4} and {5}.", moduleId, totalSwaps, currentButtons / 10, currentButtons % 10, swapButtons / 10, swapButtons % 10);
 
@@ -967,6 +967,141 @@ namespace Assets
                     //Debug.LogFormat("Sorted: {0}", sorted[k]);
                 }
             }
+
+            return false;
+        }
+
+        public bool SlowSort(byte[] buttonList, byte swapButtons, byte totalSwaps, int moduleId, ref Func<IEnumerable<int>> serialNumber)
+        {
+            byte currentSwaps = 0, currentButtons = 0;
+            int index = 0, offset = 0;
+
+            for (int i = 1; i <= 11; i++)
+            {
+                switch (i)
+                {
+                    //1st > 2nd
+                    case 1:
+                    case 3:
+                    case 6:
+                    case 9:
+                    case 11:
+                        index = 0;
+                        offset = 1;
+                        break;
+
+                    //2nd > 3rd
+                    case 2:
+                    case 10:
+                        index = 1;
+                        offset = 1;
+                        break;
+
+                    //4th > 5th
+                    case 4:
+                        index = 3;
+                        offset = 1;
+                        break;
+
+                    //3rd > 5th
+                    case 5:
+                        index = 2;
+                        offset = 2;
+                        break;
+
+                    //3rd > 4th
+                    case 7:
+                        index = 2;
+                        offset = 1;
+                        break;
+
+                    //2nd > 4th
+                    case 8:
+                        index = 1;
+                        offset = 2;
+                        break;
+                }
+
+                //Debug.LogFormat("{0}", i);
+
+                bool compare = Compare(ref index, ref offset, ref buttonList, ref currentSwaps, ref totalSwaps, ref currentButtons, ref swapButtons, ref moduleId);
+
+                if (compare)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public bool ShellSort(byte[] buttonList, byte swapButtons, byte totalSwaps, int moduleId, ref Func<IEnumerable<int>> serialNumber)
+        {
+            byte currentSwaps = 0, currentButtons = 0;
+
+            bool compare;
+            int j;
+            for (int i = 2; i > 0; i --)
+            {
+                for (j = 0; j < buttonList.Length; j++)
+                {
+                    compare = Compare(ref j, ref i, ref buttonList, ref currentSwaps, ref totalSwaps, ref currentButtons, ref swapButtons, ref moduleId);
+
+                    if (compare)
+                        return true;
+                }
+
+                j = 0;
+                compare = Compare(ref j, ref i, ref buttonList, ref currentSwaps, ref totalSwaps, ref currentButtons, ref swapButtons, ref moduleId);
+
+                if (compare)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public bool StoogeSort(byte[] buttonList, byte swapButtons, byte totalSwaps, int moduleId, ref Func<IEnumerable<int>> serialNumber)
+        {
+            byte currentSwaps = 0, currentButtons = 0;
+
+            if (StoogeSortSubArray(0, buttonList, swapButtons, totalSwaps, moduleId, ref serialNumber, ref currentSwaps, ref currentButtons))
+                return true;
+            if (StoogeSortSubArray(1, buttonList, swapButtons, totalSwaps, moduleId, ref serialNumber, ref currentSwaps, ref currentButtons))
+                return true;
+            if (StoogeSortSubArray(0, buttonList, swapButtons, totalSwaps, moduleId, ref serialNumber, ref currentSwaps, ref currentButtons))
+                return true;
+
+            if (StoogeSortSubArray(1, buttonList, swapButtons, totalSwaps, moduleId, ref serialNumber, ref currentSwaps, ref currentButtons))
+                return true;
+            if (StoogeSortSubArray(2, buttonList, swapButtons, totalSwaps, moduleId, ref serialNumber, ref currentSwaps, ref currentButtons))
+                return true;
+            if (StoogeSortSubArray(1, buttonList, swapButtons, totalSwaps, moduleId, ref serialNumber, ref currentSwaps, ref currentButtons))
+                return true;
+
+            if (StoogeSortSubArray(0, buttonList, swapButtons, totalSwaps, moduleId, ref serialNumber, ref currentSwaps, ref currentButtons))
+                return true;
+            if (StoogeSortSubArray(1, buttonList, swapButtons, totalSwaps, moduleId, ref serialNumber, ref currentSwaps, ref currentButtons))
+                return true;
+            if (StoogeSortSubArray(0, buttonList, swapButtons, totalSwaps, moduleId, ref serialNumber, ref currentSwaps, ref currentButtons))
+                return true;
+
+            return false;
+        }
+
+        private bool StoogeSortSubArray(byte n, byte[] buttonList, byte swapButtons, byte totalSwaps, int moduleId, ref Func<IEnumerable<int>> serialNumber, ref byte currentSwaps, ref byte currentButtons)
+        {
+            int offset = 1;
+
+            int i = n;
+            if (Compare(ref i, ref offset, ref buttonList, ref currentSwaps, ref totalSwaps, ref currentButtons, ref swapButtons, ref moduleId))
+                return true;
+
+            i = (byte)(n + 1);
+            if (Compare(ref i, ref offset, ref buttonList, ref currentSwaps, ref totalSwaps, ref currentButtons, ref swapButtons, ref moduleId))
+                return true;
+
+            i = n;
+            if (Compare(ref i, ref offset, ref buttonList, ref currentSwaps, ref totalSwaps, ref currentButtons, ref swapButtons, ref moduleId))
+                return true;
 
             return false;
         }

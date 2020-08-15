@@ -31,16 +31,16 @@ public class Sorting : MonoBehaviour
                     _strikeColor = new Color32(255, 128, 128, 255),
                     _strikeBackgroundColor = new Color32(128, 64, 64, 255);
 
-    private bool _lightsOn = false, _buttonDelay = false, _bogoSort = false, _doAction = false;
+    private bool _lightsOn = false, _buttonDelay = false, _bogoSort = false, _doAction = false, _piano = false;
     private byte _frames = 0, _pushTimes = 0;
     private int _moduleId = 0;
     private float _animate = 1;
     
     private List<byte> _selected = new List<byte>();
     private byte[] _buttons = new byte[5], _initialButtons = new byte[5];
-    private readonly string[] _algorithms = new string[12]
+    private readonly string[] _algorithms = new string[15]
     {
-        "BUBBLE", "SELECTION", "INSERTION", "RADIX", "MERGE", "COMB", "HEAP", "COCKTAIL", "ODDEVEN", "CYCLE", "FIVE", "QUICK"
+        "BUBBLE", "SELECTION", "INSERTION", "RADIX", "MERGE", "COMB", "HEAP", "COCKTAIL", "ODDEVEN", "CYCLE", "FIVE", "QUICK", "SLOW", "SHELL", "STOOGE"
     };
 
     private static bool _playSound = true;
@@ -250,11 +250,16 @@ public class Sorting : MonoBehaviour
         btn[num].AddInteractionPunch();
         Audio.PlaySoundAtTransform("tick", Module.transform);
 
-        //if lights are off, the buttons should do nothing
-        if (!_lightsOn || isSolved || _buttonDelay)
+        //if lights are off, the buttons should do 
+        if (!_lightsOn || isSolved || _buttonDelay || _piano)
         {
             string playSound = "button" + (num + 1).ToString();
             Audio.PlaySoundAtTransform(playSound, Module.transform);
+
+            if (_piano)
+                btn[num].GetComponent<MeshRenderer>().material.color = btn[num].GetComponent<MeshRenderer>().material.color == _highlightColor
+                                                                     ? btn[num].GetComponent<MeshRenderer>().material.color = _buttonColor
+                                                                     : btn[num].GetComponent<MeshRenderer>().material.color = _highlightColor;
             return;
         }
 
@@ -473,13 +478,6 @@ public class Sorting : MonoBehaviour
                 sorted++;
         }
 
-        //information dump, bogosort should not state this information due to potential spam with the amount of swaps you have to make
-        if (!_bogoSort)
-        {
-            Debug.LogFormat("[Sorting #{0}] {1}/{2} buttons are now sorted.", _moduleId, sorted + 1, _buttons.Length);
-            Debug.LogFormat("");
-        }
-
         //checks if everything is sorted
         if (sorted == _buttons.Length - 1)
         {
@@ -506,7 +504,16 @@ public class Sorting : MonoBehaviour
     {
         string[] validNumbers = { "1", "2", "3", "4", "5" };
         char[] c = par.ToCharArray();
-        return c.Length == 2 && (validNumbers.Contains(c[0].ToString()) || validNumbers.Contains(c[0].ToString()));
+
+        if (_piano)
+            return c.Length == 2 && (validNumbers.Contains(c[0].ToString()) || validNumbers.Contains(c[1].ToString()));
+
+        else
+            for (int i = 0; i < c.Length; i++)
+                if (validNumbers.Contains(c[i].ToString()))
+                    return false;
+
+        return true;
     }
 
 #pragma warning disable 414
@@ -521,46 +528,70 @@ public class Sorting : MonoBehaviour
     {
         string[] buttonSwapped = command.Split(' ');
 
+        if (Regex.IsMatch(buttonSwapped[0], @"^\s*piano\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            _piano = !_piano;
+            for (int i = 0; i < btn.Length; i++)
+                btn[i].GetComponent<MeshRenderer>().material.color = _buttonColor;
+        }
+
         //if command is formatted correctly
-        if (Regex.IsMatch(buttonSwapped[0], @"^\s*swap\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        else if (Regex.IsMatch(buttonSwapped[0], @"^\s*swap\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
             yield return null;
 
-            _doAction = true;
-            for (int i = 1; i < buttonSwapped.Length; i++)
+            if (_piano)
             {
-                string[] validNumbers = { "1", "2", "3", "4", "5" };
-                char[] c = buttonSwapped[i].ToCharArray();
-                if (c.Length != 2 || !validNumbers.Contains(c[0].ToString()) || !validNumbers.Contains(c[0].ToString()))
-                    _doAction = false;
+                for (int i = 0; i < buttonSwapped[1].Length; i++)
+                {
+                    byte seq = 0;
+                    if (byte.TryParse(buttonSwapped[1][i].ToString(), out seq))
+                        btn[seq - 1].OnInteract();
+                    yield return new WaitForSeconds(0.1f);
+                }
             }
 
-            if (!_doAction)
-                yield return "sendtochaterror Invalid number! Only label positions 1-5 can be swapped. Expected a two-digit number.";
-
             else
+            {
+                _doAction = true;
                 for (int i = 1; i < buttonSwapped.Length; i++)
                 {
-                    if (!_doAction)
-                        break;
-
+                    string[] validNumbers = { "1", "2", "3", "4", "5" };
                     char[] c = buttonSwapped[i].ToCharArray();
-                    byte seq1 = 0, seq2;
+                    if (c.Length != 2 || !validNumbers.Contains(c[0].ToString()) || !validNumbers.Contains(c[1].ToString()))
+                        _doAction = false;
+                }
 
-                    byte.TryParse(c[0].ToString(), out seq1);
-                    byte.TryParse(c[1].ToString(), out seq2);
+                if (!_doAction)
+                    yield return "sendtochaterror Invalid number! Only label positions 1-5 can be swapped. Expected a two-digit number.";
 
-                    if (seq1 != seq2)
+                else
+                {
+                    for (int i = 1; i < buttonSwapped.Length; i++)
                     {
-                        btn[seq1 - 1].OnInteract();
+                        if (!_doAction)
+                            break;
 
-                        yield return new WaitForSeconds(0.2f);
+                        char[] c = buttonSwapped[i].ToCharArray();
+                        byte seq1 = 0, seq2;
 
-                        btn[seq2 - 1].OnInteract();
+                        byte.TryParse(c[0].ToString(), out seq1);
+                        byte.TryParse(c[1].ToString(), out seq2);
 
-                        yield return new WaitForSeconds(0.4f);
+                        if (seq1 != seq2)
+                        {
+                            btn[seq1 - 1].OnInteract();
+
+                            yield return new WaitForSeconds(0.2f);
+
+                            btn[seq2 - 1].OnInteract();
+
+                            yield return new WaitForSeconds(0.4f);
+                        }
                     }
                 }
+            }
         }
     }
 
