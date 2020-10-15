@@ -1056,6 +1056,18 @@ namespace Assets
                     return true;
             }
 
+            for (int i = 0; i < 2; i++)
+            {
+                for (j = 0; j < buttonList.Length; j++)
+                {
+                    int offset = 0;
+                    compare = Compare(ref j, ref offset, ref buttonList, ref currentSwaps, ref totalSwaps, ref currentButtons, ref swapButtons, ref moduleId);
+
+                    if (compare)
+                        return true;
+                }
+            }
+
             return false;
         }
 
@@ -1108,10 +1120,7 @@ namespace Assets
 
         public bool BogoSort(byte[] buttonList, byte swapButtons, byte totalSwaps, int moduleId, ref Func<IEnumerable<int>> serialNumber)
         {
-            if (totalSwaps != 250)
-                return true;
-
-            return false;
+            return totalSwaps != 250;
         }
     }
 }
