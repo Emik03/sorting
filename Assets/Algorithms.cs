@@ -1060,7 +1060,7 @@ namespace Assets
             {
                 for (j = 0; j < buttonList.Length; j++)
                 {
-                    int offset = 0;
+                    int offset = 1;
                     compare = Compare(ref j, ref offset, ref buttonList, ref currentSwaps, ref totalSwaps, ref currentButtons, ref swapButtons, ref moduleId);
 
                     if (compare)

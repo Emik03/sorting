@@ -184,7 +184,7 @@ public class Sorting : MonoBehaviour
 
         //get random algorithm
         _currentAlgorithm = _algorithms[Random.Range(0, _algorithms.Length)];
-        //_currentAlgorithm = "BOGO";
+        //_currentAlgorithm = "SHELL";
         Screen.text = _currentAlgorithm;
 
         Debug.LogFormat("[Sorting #{0}] Algorithm recieved: {1}", _moduleId, Screen.text);
@@ -546,7 +546,7 @@ public class Sorting : MonoBehaviour
                 for (int i = 0; i < buttonSwapped[1].Length; i++)
                 {
                     byte seq = 0;
-                    if (byte.TryParse(buttonSwapped[1][i].ToString(), out seq))
+                    if (byte.TryParse(buttonSwapped[1][i].ToString(), out seq) && seq <= 5 && seq != 0)
                         btn[seq - 1].OnInteract();
                     yield return new WaitForSeconds(0.1f);
                 }
@@ -579,16 +579,13 @@ public class Sorting : MonoBehaviour
                         byte.TryParse(c[0].ToString(), out seq1);
                         byte.TryParse(c[1].ToString(), out seq2);
 
-                        if (seq1 != seq2)
-                        {
-                            btn[seq1 - 1].OnInteract();
+                        btn[seq1 - 1].OnInteract();
 
-                            yield return new WaitForSeconds(0.2f);
+                        yield return new WaitForSeconds(0.2f);
 
-                            btn[seq2 - 1].OnInteract();
+                        btn[seq2 - 1].OnInteract();
 
-                            yield return new WaitForSeconds(0.4f);
-                        }
+                        yield return new WaitForSeconds(0.4f);
                     }
                 }
             }
